@@ -55,7 +55,13 @@ autoUpdater.on('update-downloaded', () => {
     title: 'Install Updates',
     message: 'Updates downloaded, application will be quit for update...'
   }, () => {
-    setImmediate(() => autoUpdater.quitAndInstall())
+    setImmediate(() => {
+      app.removeAllListeners("window-all-closed")
+      if (focusedWindow != null) {
+        focusedWindow.close()
+      }
+      autoUpdater.quitAndInstall(false)
+    })
   })
 })
 
