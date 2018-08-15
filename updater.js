@@ -67,6 +67,7 @@ autoUpdater.on('update-downloaded', () => {
 
 // export this to MenuItem click callback
 function checkForUpdates (menuItem, focusedWindow, event) {
+  console.log(menuItem)
   updater = menuItem
   updater.enabled = false
   autoUpdater.checkForUpdates()

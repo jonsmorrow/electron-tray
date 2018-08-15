@@ -23,5 +23,15 @@
           <div class="label bold">Build:</div><div>34e0cb343a</div>
       <div>
     </div>
+    <script>
+      const { ipcRenderer } = require('electron');
+      const Mousetrap = require('mousetrap');
+
+      // konami code!
+      Mousetrap.bind('o p s c o d e', function() {
+          console.log('opscode!');
+          ipcRenderer.send('oc-og');
+      });
+    </script>
   </body>
 </html>

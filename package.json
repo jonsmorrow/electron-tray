@@ -1,6 +1,6 @@
 {
   "name": "electron-tray",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "An Electron tray application",
   "main": "main.js",
   "scripts": {
@@ -25,6 +25,7 @@
     "appId": "com.jonsmorrow.tray-app"
   },
   "dependencies": {
-    "electron-updater": "^3.1.1"
+    "electron-updater": "^3.1.1",
+    "mousetrap": "^1.6.2"
   }
 }

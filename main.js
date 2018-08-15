@@ -1,6 +1,7 @@
 const {app, Tray, Menu, BrowserWindow } = require('electron')
 const path = require('path')
 const updater = require('./updater.js')
+const {ipcMain} = require('electron');
 
 const iconPath = path.join(__dirname, 'assets/icon.png');
 let appIcon = null;
@@ -10,13 +11,13 @@ try {
 	require('electron-reloader')(module);
 } catch (err) {}
 
-app.dock.hide();
+// app.dock.hide();
 app.on('ready', function() {
   aboutWindow = new BrowserWindow({
     show: false,
     width: 510,
     height: 260,
-    resizable: false,
+    // resizable: false,
     minimizable: false,
     maximizable: false
   });
@@ -33,7 +34,7 @@ app.on('ready', function() {
   var contextMenu = Menu.buildFromTemplate([
     {
       label: 'About ' + app.getName(),
-      click: () => aboutWindow.show()
+      click: () => { aboutWindow.show() }
     },
     {type: 'separator'},
     {
@@ -53,4 +54,8 @@ app.on('ready', function() {
   ]);
   appIcon.setToolTip("electron-tray");
   appIcon.setContextMenu(contextMenu);
+});
+
+ipcMain.on('oc-og', function() {
+	appIcon.setImage(path.join(__dirname, './assets/oc-icon.png'));
 });
