@@ -29,7 +29,7 @@ autoUpdater.on('update-available', () => {
     type: 'info',
     title: 'Found Updates',
     message: 'Found updates, do you want update now?',
-    buttons: ['Sure', 'No']
+    buttons: ['Yes', 'No']
   }, (buttonIndex) => {
     if (buttonIndex === 0) {
       autoUpdater.downloadUpdate()
