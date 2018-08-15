@@ -1,6 +1,6 @@
 {
   "name": "electron-tray",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "An Electron tray application",
   "main": "main.js",
   "scripts": {
@@ -13,7 +13,8 @@
   "author": "Jon Morrow",
   "devDependencies": {
     "electron": "^2.0.0",
-    "electron-builder": "^20.28.1"
+    "electron-builder": "^20.28.1",
+    "electron-reloader": "^0.2.0"
   },
   "build": {
     "publish": [

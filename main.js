@@ -1,91 +1,56 @@
 const {app, Tray, Menu, BrowserWindow } = require('electron')
 const path = require('path')
+const updater = require('./updater.js')
 
 const iconPath = path.join(__dirname, 'assets/icon.png');
 let appIcon = null;
-let win = null;
+let aboutWindow = null;
 
-/**
- * updater.js
- *
- * Please use manual update only when it is really required, otherwise please use recommended non-intrusive auto update.
- *
- * Import steps:
- * 1. create `updater.js` for the code snippet
- * 2. require `updater.js` for menu implementation, and set `checkForUpdates` callback from `updater` for the click property of `Check Updates...` MenuItem.
- */
-const { dialog } = require('electron')
-const { autoUpdater } = require('electron-updater')
-
-let updater
-autoUpdater.autoDownload = false
-autoUpdater.autoInstallOnAppQuit = false
-
-autoUpdater.on('error', (error) => {
-  dialog.showErrorBox('Error: ', error == null ? "unknown" : (error.stack || error).toString())
-})
-
-autoUpdater.on('update-available', () => {
-  dialog.showMessageBox({
-    type: 'info',
-    title: 'Found Updates',
-    message: 'Found updates, do you want update now?',
-    buttons: ['Yes', 'No']
-  }, (buttonIndex) => {
-    if (buttonIndex === 0) {
-      autoUpdater.downloadUpdate()
-    }
-    else {
-      updater.enabled = true
-      updater = null
-    }
-  })
-})
-
-autoUpdater.on('update-not-available', () => {
-  dialog.showMessageBox({
-    title: 'No Updates',
-    message: 'Current version is up-to-date.'
-  })
-  updater.enabled = true
-  updater = null
-})
-
-autoUpdater.on('update-downloaded', () => {
-  dialog.showMessageBox({
-    title: 'Install Updates',
-    message: 'Updates downloaded, application will be quit for update...'
-  }, () => {
-    setTimeout(function () {
-        autoUpdater.quitAndInstall();
-    }, 1000);
-  })
-})
-
-// export this to MenuItem click callback
-function checkForUpdates (menuItem, focusedWindow, event) {
-  updater = menuItem
-  updater.enabled = false
-  autoUpdater.checkForUpdates()
-}
-module.exports.checkForUpdates = checkForUpdates
+try {
+	require('electron-reloader')(module);
+} catch (err) {}
 
 app.dock.hide();
 app.on('ready', function() {
-  win = new BrowserWindow({ show: false});
+  aboutWindow = new BrowserWindow({
+    show: false,
+    width: 510,
+    height: 260,
+    resizable: false,
+    minimizable: false,
+    maximizable: false
+  });
+  aboutWindow.loadURL(`file://${__dirname}/about.html`)
+  aboutWindow.on('close', function (event) {
+    if(!app.isQuiting){
+      event.preventDefault();
+      aboutWindow.hide();
+    }
+    return false;
+  });
+
   appIcon = new Tray(iconPath);
   var contextMenu = Menu.buildFromTemplate([
     {
+      label: 'About ' + app.getName(),
+      click: () => aboutWindow.show()
+    },
+    {type: 'separator'},
+    {
       label: 'Check for updates',
       accelerator: "Alt+Command+U",
-      click: checkForUpdates
+      click: updater.checkForUpdates
     },
+    {type: 'separator'},
     {
       label: 'Quit',
       accelerator: "Command+Q",
-      selector: 'terminate:'
+      click: function() {
+        app.isQuiting = true;
+        app.quit();
+      }
     }
   ]);
-  appIcon.setToolTip("This is an electron tray app.");
+  appIcon.setToolTip("electron-tray");
   appIcon.setContextMenu(contextMenu);
 });
