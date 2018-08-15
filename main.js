@@ -11,13 +11,13 @@ try {
 	require('electron-reloader')(module);
 } catch (err) {}
 
-// app.dock.hide();
+app.dock.hide();
 app.on('ready', function() {
   aboutWindow = new BrowserWindow({
     show: false,
     width: 510,
     height: 260,
-    // resizable: false,
+    resizable: false,
     minimizable: false,
     maximizable: false
   });
