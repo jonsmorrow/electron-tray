@@ -1,6 +1,6 @@
 {
   "name": "electron-tray",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "An Electron tray application",
   "main": "main.js",
   "scripts": {

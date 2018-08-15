@@ -56,7 +56,9 @@ autoUpdater.on('update-downloaded', () => {
     title: 'Install Updates',
     message: 'Updates downloaded, application will be quit for update...'
   }, () => {
-    autoUpdater.quitAndInstall()
+    setTimeout(function () {
+        autoUpdater.quitAndInstall();
+    }, 1000);
   })
 })
 
