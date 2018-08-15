@@ -19,6 +19,7 @@ const { autoUpdater } = require('electron-updater')
 
 let updater
 autoUpdater.autoDownload = false
+autoUpdater.autoInstallOnAppQuit = false
 
 autoUpdater.on('error', (error) => {
   dialog.showErrorBox('Error: ', error == null ? "unknown" : (error.stack || error).toString())
